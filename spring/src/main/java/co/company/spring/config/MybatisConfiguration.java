@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 
 //인터페이스 경로
-@MapperScan(basePackages = {"co.company.spring.**"})
+@MapperScan(basePackages = {"co.company.spring.dao"})
 
 public class MybatisConfiguration {
 	@Autowired

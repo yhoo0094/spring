@@ -1,6 +1,7 @@
 package co.company.spring.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,9 +15,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import co.company.spring.dao.Emp;
 import co.company.spring.dao.EmpMapper;
+import co.company.spring.dao.EmpSearch;
+import co.company.spring.dao.Jobs;
 
 @Controller
 public class EmpController {
@@ -24,9 +29,12 @@ public class EmpController {
 	EmpMapper dao;
 	
 	@RequestMapping(value = "/empSelect", method = RequestMethod.GET)
-	public String select() {
+	public ModelAndView select(EmpSearch emp) {
+		ModelAndView mav = new ModelAndView();
 		//조회
-		return "emp/select";
+		mav.addObject("list", dao.getEmpList(emp));
+		mav.setViewName("emp/select");
+		return mav;
 	}
 	
 	@GetMapping("/empInsertForm")
@@ -38,7 +46,11 @@ public class EmpController {
 	
 	@PostMapping("/empInsert")
 	public String insert(Emp emp, @ModelAttribute("employee") Emp emp2) {
-		dao.insertEmp(emp);
+		if(emp.getEmployeeId() == null) {
+			dao.insertEmp(emp);
+		} else {
+			dao.updateEmp(emp);
+		}
 		return "emp/insertOutput";
 	}
 	
@@ -69,5 +81,9 @@ public class EmpController {
 		return "emp/insert";
 	}
 	
-	
+	@RequestMapping("/ajax/jobSelect")
+	@ResponseBody
+	public List<Jobs> jobselect(){
+		return dao.jobSelect();
+	}
 }

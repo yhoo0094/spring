@@ -9,5 +9,7 @@
 	</settings>
 	<typeAliases>
 		<typeAlias type="co.company.spring.dao.Emp" alias="emp"/>
+		<typeAlias type="co.company.spring.users.service.UserVO" alias="user"/>
+		<package name="co.company.spring.dao"/>
 	</typeAliases>
 </configuration>  

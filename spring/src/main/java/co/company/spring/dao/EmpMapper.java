@@ -6,7 +6,7 @@ import java.util.Map;
 public interface EmpMapper {
 
 	public List<Emp> getEmpList(Emp emp);
-	public List<EmpSearch> getEmpList(EmpSearch emp);
+	public List<Emp> getEmpList(EmpSearch emp);
 	public Emp getEmp(Emp emp);
 	public int updateEmp(Emp emp);
 	public int insertEmp(Emp emp);
