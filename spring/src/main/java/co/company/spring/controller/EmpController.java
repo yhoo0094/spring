@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import co.company.spring.dao.Depts;
 import co.company.spring.dao.Emp;
 import co.company.spring.dao.EmpMapper;
 import co.company.spring.dao.EmpSearch;
@@ -39,13 +41,17 @@ public class EmpController {
 	
 	@GetMapping("/empInsertForm")
 	public String insertForm(Model model, Emp emp) {
-		model.addAttribute("jobs", dao.jobSelect());
-		model.addAttribute("depts", dao.deptSelect());
+//		model.addAttribute("jobs", dao.jobSelect());
+//		model.addAttribute("depts", dao.deptSelect());
 		return "emp/insert";
 	}
 	
 	@PostMapping("/empInsert")
-	public String insert(Emp emp, @ModelAttribute("employee") Emp emp2) {
+	public String insert(Emp emp, Errors errors) {
+		new EmpValidator().validate(emp, errors);
+		if(errors.hasErrors()) {
+			return "emp/insert";
+		}
 		if(emp.getEmployeeId() == null) {
 			dao.insertEmp(emp);
 		} else {
@@ -75,9 +81,9 @@ public class EmpController {
 	
 	@GetMapping("/empUpdateForm")
 	public String UpdateForm(Model model, Emp emp) {
-		model.addAttribute("emp", dao.getEmp(emp));
-		model.addAttribute("jobs", dao.jobSelect());
-		model.addAttribute("depts", dao.deptSelect());
+//		model.addAttribute("emp", dao.getEmp(emp));
+//		model.addAttribute("jobs", dao.jobSelect());
+//		model.addAttribute("depts", dao.deptSelect());
 		return "emp/insert";
 	}
 	
@@ -85,5 +91,15 @@ public class EmpController {
 	@ResponseBody
 	public List<Jobs> jobselect(){
 		return dao.jobSelect();
+	}
+	
+	@ModelAttribute("jobs")
+	public List<Jobs> jobs(){
+		return dao.jobSelect();
+	}
+	
+	@ModelAttribute("depts")
+	public List<Depts> depts(){
+		return dao.deptSelect();
 	}
 }
