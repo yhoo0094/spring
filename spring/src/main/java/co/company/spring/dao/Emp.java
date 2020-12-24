@@ -16,8 +16,8 @@ public class Emp {
 	String firstName;
 	String lastName;
 	String email;
-	/* @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss") */
-	@JsonFormat(shape = Shape.STRING)
+	/* @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss") */ /* 데이터가 선택 */
+	@JsonFormat(shape = Shape.STRING) /* 데이터가 필수 */
 	Date hireDate;	
 	String jobId;	
 	String departmentId;

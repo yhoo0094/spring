@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -23,15 +24,6 @@ import co.company.spring.controller.Greeter;
 @EnableWebMvc
 public class MvcConfiguration implements WebMvcConfigurer {
 	
-	@Bean
-	public MessageSource messageSource() {
-		ResourceBundleMessageSource ms = new ResourceBundleMessageSource();
-		ms.setBasenames("message.label"); //폴더이름.확장자
-		ms.setDefaultEncoding("UTF-8");
-		ms.setCacheSeconds(10);
-		return ms;
-	}
-	
 	@Bean //컨테이너에 객체 등록
 	public Greeter greeter() {
 		Greeter g = new Greeter();
@@ -47,6 +39,7 @@ public class MvcConfiguration implements WebMvcConfigurer {
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+		registry.addResourceHandler("/images/**").addResourceLocations("/images/");
 	}
 
 //	@Override
@@ -61,6 +54,16 @@ public class MvcConfiguration implements WebMvcConfigurer {
 		resolver.setSuffix(".jsp");
 		resolver.setOrder(3);
 		return resolver;
+	}
+	
+//	<-------------------------------------------------------------메세지---------------------------------------------------------->
+	@Bean
+	public MessageSource messageSource() {
+		ResourceBundleMessageSource ms = new ResourceBundleMessageSource();
+		ms.setBasenames("message.label"); //폴더이름.확장자
+		ms.setDefaultEncoding("UTF-8");
+		ms.setCacheSeconds(10);
+		return ms;
 	}
 	
 	/**
@@ -94,5 +97,15 @@ public class MvcConfiguration implements WebMvcConfigurer {
 	public AuthCheckInterceptor authCheckInterceptor() {
 		return new AuthCheckInterceptor(); 
 	}
+	
+//	<-------------------------------------------------------------파일업로드---------------------------------------------------------->
+	@Bean CommonsMultipartResolver multipartResolver() {
+		CommonsMultipartResolver multi = new CommonsMultipartResolver();
+		multi.setMaxUploadSizePerFile(1024*1000*10); //파일의 최대 용량, 1024*1000*10 = 10MB
+//		multi.setMaxUploadSize(maxUploadSize); //전체 파일의 최대 용량
+		
+		return multi;
+	}
+	
 
 }
