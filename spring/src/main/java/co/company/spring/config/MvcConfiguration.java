@@ -4,6 +4,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
@@ -22,6 +23,7 @@ import co.company.spring.controller.Greeter;
 @Configuration
 @ComponentScan(basePackages="co.company.spring")
 @EnableWebMvc
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 public class MvcConfiguration implements WebMvcConfigurer {
 	
 	@Bean //컨테이너에 객체 등록

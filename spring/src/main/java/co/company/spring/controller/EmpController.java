@@ -24,25 +24,26 @@ import co.company.spring.dao.Emp;
 import co.company.spring.dao.EmpMapper;
 import co.company.spring.dao.EmpSearch;
 import co.company.spring.dao.Jobs;
+import co.company.spring.emp.service.EmpService;
 
 @Controller
 public class EmpController {
 	@Autowired
-	EmpMapper dao;
+	EmpService service;
 	
 	@RequestMapping(value = "/empSelect", method = RequestMethod.GET)
 	public ModelAndView select(EmpSearch emp) {
 		ModelAndView mav = new ModelAndView();
 		//조회
-		mav.addObject("list", dao.getEmpList(emp));
+		mav.addObject("list", service.getEmpList(emp));
 		mav.setViewName("emp/select");
 		return mav;
 	}
 	
 	@GetMapping("/empInsertForm")
 	public String insertForm(Model model, Emp emp) {
-//		model.addAttribute("jobs", dao.jobSelect());
-//		model.addAttribute("depts", dao.deptSelect());
+//		model.addAttribute("jobs", service.jobSelect());
+//		model.addAttribute("depts", service.deptSelect());
 		return "emp/insert";
 	}
 	
@@ -53,9 +54,9 @@ public class EmpController {
 			return "emp/insert";
 		}
 		if(emp.getEmployeeId() == null) {
-			dao.insertEmp(emp);
+			service.insertEmp(emp);
 		} else {
-			dao.updateEmp(emp);
+			service.updateEmp(emp);
 		}
 		return "emp/insertOutput";
 	}
@@ -81,25 +82,25 @@ public class EmpController {
 	
 	@GetMapping("/empUpdateForm")
 	public String UpdateForm(Model model, Emp emp) {
-//		model.addAttribute("emp", dao.getEmp(emp));
-//		model.addAttribute("jobs", dao.jobSelect());
-//		model.addAttribute("depts", dao.deptSelect());
+//		model.addAttribute("emp", service.getEmp(emp));
+//		model.addAttribute("jobs", service.jobSelect());
+//		model.addAttribute("depts", service.deptSelect());
 		return "emp/insert";
 	}
 	
 	@RequestMapping("/ajax/jobSelect")
 	@ResponseBody
 	public List<Jobs> jobselect(){
-		return dao.jobSelect();
+		return service.jobSelect();
 	}
 	
 	@ModelAttribute("jobs")
 	public List<Jobs> jobs(){
-		return dao.jobSelect();
+		return service.jobSelect();
 	}
 	
 	@ModelAttribute("depts")
 	public List<Depts> depts(){
-		return dao.deptSelect();
+		return service.deptSelect();
 	}
 }
