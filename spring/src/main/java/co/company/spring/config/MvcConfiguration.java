@@ -6,6 +6,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+import org.springframework.web.servlet.view.BeanNameViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import co.company.spring.common.AuthCheckInterceptor;
@@ -24,6 +26,7 @@ import co.company.spring.controller.Greeter;
 @ComponentScan(basePackages="co.company.spring")
 @EnableWebMvc
 @EnableAspectJAutoProxy(proxyTargetClass = true)
+@EnableScheduling
 public class MvcConfiguration implements WebMvcConfigurer {
 	
 	@Bean //컨테이너에 객체 등록
@@ -57,6 +60,14 @@ public class MvcConfiguration implements WebMvcConfigurer {
 		resolver.setOrder(3);
 		return resolver;
 	}
+	
+	@Bean
+	BeanNameViewResolver beanNameViewResolver() {
+		BeanNameViewResolver bean = new BeanNameViewResolver();
+		bean.setOrder(1);
+		return bean;
+	}
+	
 	
 //	<-------------------------------------------------------------메세지---------------------------------------------------------->
 	@Bean
